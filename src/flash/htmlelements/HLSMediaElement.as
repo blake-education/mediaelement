@@ -4,8 +4,9 @@
   import flash.media.Video;
   import flash.media.SoundTransform;
   import org.mangui.hls.HLS;
-  import org.mangui.hls.HLSEvent;
-  import org.mangui.hls.HLSPlayStates;
+  import org.mangui.hls.HLSSettings;
+  import org.mangui.hls.event.HLSEvent;
+  import org.mangui.hls.constant.HLSPlayStates;
   import org.mangui.hls.utils.Log;
 
 public class HLSMediaElement extends Sprite implements IMediaElement {
@@ -73,6 +74,7 @@ public class HLSMediaElement extends Sprite implements IMediaElement {
       _videoWidth = event.levels[0].width;
       _videoHeight = event.levels[0].height;
       _isManifestLoaded = true;
+      _hls.stage = _video.stage;
       sendEvent(HtmlMediaEvent.LOADEDMETADATA);
       sendEvent(HtmlMediaEvent.CANPLAY);
       if(_autoplay || _playqueued) {
@@ -142,7 +144,7 @@ public class HLSMediaElement extends Sprite implements IMediaElement {
 
     public function pause():void {
       if(!_isManifestLoaded)
-        return;      
+        return;
       //Log.txt("HLSMediaElement:pause");
       _hls.stream.pause();
     }
@@ -179,7 +181,7 @@ public class HLSMediaElement extends Sprite implements IMediaElement {
 
     public function setCurrentTime(pos:Number):void{
       if(!_isManifestLoaded)
-        return;      
+        return;
       sendEvent(HtmlMediaEvent.SEEKING);
       _hls.stream.seek(pos);
     }
